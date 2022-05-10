@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/article")
+ * @Route("/article", name="article_")
  */
 class ArticleController extends AbstractController
 {
     /**
-     * @Route("/", name="app_article_index", methods={"GET"})
+     * @Route("", name="liste", methods={"GET"})
      */
     public function index(ArticleRepository $articleRepository): Response
     {
@@ -26,7 +26,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_article_new", methods={"GET", "POST"})
+     * @Route("/new", name="new", methods={"GET", "POST"})
      */
     public function new(Request $request, ArticleRepository $articleRepository): Response
     {
@@ -47,7 +47,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_article_show", methods={"GET"})
+     * @Route("/{id}", name="details", , methods={"GET"})
      */
     public function show(Article $article): Response
     {
@@ -57,7 +57,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_article_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="editer", methods={"GET", "POST"})
      */
     public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -77,7 +77,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_article_delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"POST"})
      */
     public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
     {
@@ -85,6 +85,6 @@ class ArticleController extends AbstractController
             $articleRepository->remove($article, true);
         }
 
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
     }
 }
