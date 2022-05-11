@@ -37,7 +37,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -47,7 +47,7 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="details", , methods={"GET"})
+     * @Route("/{id}-ici-le-slug-de-larticle", name="details", methods={"GET"})
      */
     public function show(Article $article): Response
     {
@@ -67,7 +67,7 @@ class ArticleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $articleRepository->add($article, true);
 
-            return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [

@@ -7,6 +7,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <title>{% block title %}SpaceBlog{% endblock %}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
         <link rel="icon" href="{{ asset('img/galaxy-spiral-s.png')}}">
 
 
@@ -15,23 +18,24 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+
     </head>
     <body>
 
     <header>
         <div class="container-fluid">
-
+            {% include ('inc/hearder.html.twig')%}
         </div>
     </header>
 
         {% block body %}{% endblock %}
 
-    <footer>
 
-    </footer>
-
+    <div class="container-fluid">
+        {% include ('inc/footer.html.twig')%}
+    </div>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
     </body>
 </html>

@@ -1,1 +1,11 @@
 $body-bg: #fff1e6;
+
+$roboto-font : 'Roboto', serif;
+
+body{
+  font-family: $roboto-font;
+}
+
+footer{
+  background-color: var(--orange);
+}
