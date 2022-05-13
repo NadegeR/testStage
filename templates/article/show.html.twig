@@ -3,36 +3,21 @@
 {% block title %}Article{% endblock %}
 
 {% block body %}
-    <h1>Article</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ article.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ article.title }}</td>
-            </tr>
-            <tr>
-                <th>Content</th>
-                <td>{{ article.content }}</td>
-            </tr>
-            <tr>
-                <th>Cover</th>
-                <td>{{ article.cover }}</td>
-            </tr>
-            <tr>
-                <th>Date_created</th>
-                <td>{{ article.dateCreated ? article.dateCreated|date('d-m-Y H:i') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <h1>Article : {{ article.title }}</h1>
 
-    <a href="{{ path('article_liste') }}">back to list</a>
+<section class="article-details">
+    <div>
+    <div class="image"><img class="photo align-content-center" src="{{ asset('uploads/covers/'~ article.cover) }}"
+                            alt="{{ article.title }}"></div>
+    <div class="content">{{ article.content }}</div>
+    <div>{{ article.dateCreated | date('d-m-Y H:i')}}</div>
+    </div>
+</section>
 
-    <a href="{{ path('article_editer', {'id': article.id}) }}">edit</a>
 
-    {{ include('article/_delete_form.html.twig') }}
+
+    <a href="{{ path('article_liste') }}"><button type="button" class="btn btn-outline-warning">Retour</button></a>
+
+
 {% endblock %}

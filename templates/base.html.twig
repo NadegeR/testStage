@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <title>{% block title %}SpaceBlog{% endblock %}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-        <link rel="icon" href="{{ asset('img/galaxy-spiral-s.png')}}">
-
-
-
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+    <title>{% block title %}SpaceBlog{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ asset('img/galaxy-spiral-s.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.scss') }}">
 
 
-    </head>
-    <body>
-
-    <header>
-        <div class="container-fluid">
-            {% include ('inc/hearder.html.twig')%}
-        </div>
-    </header>
-
-        {% block body %}{% endblock %}
-
-
-    <div class="container-fluid">
-        {% include ('inc/footer.html.twig')%}
-    </div>
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
-    </body>
+
+
+</head>
+<body>
+
+<header class="container-fluid">
+    {% include ('inc/header.html.twig') %}
+</header>
+
+<div class="container-fluid">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+<main>
+    <div class="container-fluid">
+        {% block body %} {% endblock %}
+    </div>
+</main>
+
+<footer class="bg-warning">
+    {% include ('inc/footer.html.twig') %}
+</footer>
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+</body>
 </html>

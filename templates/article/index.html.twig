@@ -3,49 +3,32 @@
 {% block title %}{{ parent() }} | Accueil{% endblock %}
 
 {% block body %}
-    <section class="container-fluid">
+    <div class="card rounded fs-3 text-white border-0 mb-5">
+        <div><img id="en-tete"class="card-img" src="{{ asset('img/ivan-diaz-dmhv6.png') }}" alt="ivan-diaz">
+        <div class="card-img-overlay" style="vertical-align: middle" >
+
+            <h4 class="card-title"><span>Découvrez </span><span class="text-color">l'espace</span></h4>
+            <h4 class="card-title">Comme jamais</h4>
+            <h4 class="card-title">auparavant</h4>
+        </div>
+    </div>
+    </div>
+    <section class="d-flex align-items-center justify-content-center flex-wrap">
         {% for article in articles %}
-        <article class="row justify-content-center">
-            <a href="{{ path('article_details', {'id': article.id }) }}" title ="article/{{ article.id }} ici le slug de l'article">
-                <img src="{{ asset('img/'~article.cover) }}" alt="{{ article.title }}">
-                <div>{{ article.title }}</div>
-            </a>
-        </article>
+            <div class="card mb-4 box-shadow mx-3 border-0" id="vignette">
+                <a class="text-decoration-none" href="{{ path('article_details', {'id': article.id }) }}"
+                   title="article/{{ article.id }} ici le slug de l'article">
+                    <div class="image"><img class="photo" src="{{ asset('uploads/covers/'~ article.cover) }}"
+                                            alt="{{ article.title }}"></div>
+                    <div class="titre m-0 ">{{ article.title }}</div>
+                </a>
+                {#            <a href="{{ path('article_details', {'id': article.id}) }}">Voir</a> #}
+                {#            <a href="{{ path('article_editer', {'id': article.id}) }}">Editer</a> #}
+            </div>
         {% endfor %}
 
     </section>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Cover</th>
-                <th>Date_created</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.title }}</td>
-                <td>{{ article.content }}</td>
-                <td>{{ article.cover }}</td>
-                <td>{{ article.dateCreated ? article.dateCreated|date('d-m-Y H:i') : '' }}</td>
-                <td>
-                    <a href="{{ path('article_details', {'id': article.id}) }}">Voir</a>
-                    <a href="{{ path('article_editer', {'id': article.id}) }}">Editer</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('article_new') }}">Create new</a>
+    <a href="{{ path('article_admin') }}"><a href="{{ path('article_new') }}"><button type="button" class="btn btn-outline-warning">Admin</button></a>
+    {#    <a href="{{ path('article_new') }}">Create new</a> #}
 {% endblock %}

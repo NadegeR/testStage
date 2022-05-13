@@ -6,9 +6,11 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/article", name="article_")
@@ -28,14 +30,39 @@ class ArticleController extends AbstractController
     /**
      * @Route("/new", name="new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ArticleRepository $articleRepository): Response
+    public function new(Request $request, ArticleRepository $articleRepository, SluggerInterface $slugger): Response
     {
         $article = new Article();
+        $article->setDateCreated(new \DateTime());
+
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $coverFile = $form->get('cover')->getData();
+            if ($coverFile) {
+                $coverName = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($coverName);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
+
+                // Move the file to the directory where covers are stored
+                try {
+                    $coverFile->move(
+                        $this->getParameter('covers_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $article->setcover($newFilename);
+            }
+
             $articleRepository->add($article, true);
+
+            $this->addFlash('success', 'Article ajouté.');
 
             return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
         }
@@ -57,17 +84,38 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="editer", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="editer", methods={"GET","POST"})
      */
-    public function edit(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    public function edit(Request $request, Article $article, ArticleRepository $articleRepository, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $articleRepository->add($article, true);
+            $coverFile = $form->get('cover')->getData();
+            if ($coverFile) {
+                $coverName = pathinfo($coverFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($coverName);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$coverFile->guessExtension();
 
-            return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
+                // Move the file to the directory where covers are stored
+                try {
+                    $coverFile->move(
+                        $this->getParameter('covers_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $article->setcover($newFilename);
+            }
+
+            $articleRepository->add($article, true);
+            $this->addFlash('success', 'Article modifié.');
+
+            return $this->redirectToRoute('article_details', ['id'=>$article->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/edit.html.twig', [
@@ -86,5 +134,15 @@ class ArticleController extends AbstractController
         }
 
         return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/admin", name="admin", methods={"GET", "POST"})
+     */
+    public function admin(ArticleRepository $articleRepository): Response
+    {
+        return $this->render('article/admin.html.twig', [
+            'articles' => $articleRepository->findAll(),
+        ]);
     }
 }

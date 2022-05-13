@@ -1,5 +1,3 @@
-@import "custom";
+@import "public/css/custom";
 @import "~bootstrap/scss/bootstrap";
-footer {
-  background-color: orangered;
-}
+@import "moncss";
