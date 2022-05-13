@@ -3,32 +3,37 @@
 {% block title %}{{ parent() }} | Accueil{% endblock %}
 
 {% block body %}
-    <div class="card rounded fs-3 text-white border-0 mb-5">
-        <div><img id="en-tete"class="card-img" src="{{ asset('img/ivan-diaz-dmhv6.png') }}" alt="ivan-diaz">
-        <div class="card-img-overlay" style="vertical-align: middle" >
-
-            <h4 class="card-title"><span>Découvrez </span><span class="text-color">l'espace</span></h4>
-            <h4 class="card-title">Comme jamais</h4>
-            <h4 class="card-title">auparavant</h4>
+<section id="header" class="d-flex align-items-center justify-content-center flex-wrap">
+    <div class="card align-items-center justify-content-center rounded fs-3 text-white border-0 mb-5">
+        <div><img id="en-tete" class="card-img" src="{{ asset('img/ivan-diaz-dmhv6.png') }}" alt="ivan-diaz">
+            <div class="card-img-overlay" style="vertical-align: middle">
+                <div class="text-en-tete">
+                    <h4 class="card-title "><span>Découvrez </span><span class="text-color">l'espace</span></h4>
+                    <h4 class="card-title">Comme jamais</h4>
+                    <h4 class="card-title">auparavant</h4>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-    <section class="d-flex align-items-center justify-content-center flex-wrap">
-        {% for article in articles %}
-            <div class="card mb-4 box-shadow mx-3 border-0" id="vignette">
-                <a class="text-decoration-none" href="{{ path('article_details', {'id': article.id }) }}"
-                   title="article/{{ article.id }} ici le slug de l'article">
-                    <div class="image"><img class="photo" src="{{ asset('uploads/covers/'~ article.cover) }}"
-                                            alt="{{ article.title }}"></div>
-                    <div class="titre m-0 ">{{ article.title }}</div>
-                </a>
-                {#            <a href="{{ path('article_details', {'id': article.id}) }}">Voir</a> #}
-                {#            <a href="{{ path('article_editer', {'id': article.id}) }}">Editer</a> #}
-            </div>
-        {% endfor %}
+</section>
+<section class="d-flex align-items-center justify-content-center flex-wrap">
+    {% for article in articles %}
+        <div class="card mb-4 box-shadow mx-3 border-0" id="vignette">
+            <a class="text-decoration-none" href="{{ path('article_details', {'id': article.id }) }}"
+               title="article/{{ article.id }} ici le slug de l'article">
+                <div class="image"><img class="photo" src="{{ asset('uploads/covers/'~ article.cover) }}"
+                                        alt="{{ article.title }}"></div>
+                <div class="titre m-0 ">{{ article.title }}</div>
+            </a>
+            {#            <a href="{{ path('article_details', {'id': article.id}) }}">Voir</a> #}
+            {#            <a href="{{ path('article_editer', {'id': article.id}) }}">Editer</a> #}
+        </div>
+    {% endfor %}
 
-    </section>
+</section>
 
-    <a href="{{ path('article_admin') }}"><a href="{{ path('article_new') }}"><button type="button" class="btn btn-outline-warning">Admin</button></a>
+<a href="{{ path('article_admin') }}"><a href="{{ path('article_new') }}">
+        <button type="button" class="btn btn-outline-warning">Admin</button>
+    </a>
     {#    <a href="{{ path('article_new') }}">Create new</a> #}
-{% endblock %}
+    {% endblock %}

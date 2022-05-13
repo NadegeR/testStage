@@ -64,7 +64,7 @@ class ArticleController extends AbstractController
 
             $this->addFlash('success', 'Article ajouté.');
 
-            return $this->redirectToRoute('article_liste', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_details', ['id'=>$article->getId()],  Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
